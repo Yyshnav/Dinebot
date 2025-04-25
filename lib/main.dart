@@ -1,3 +1,4 @@
+import 'package:dinebot/api/splash.dart';
 import 'package:dinebot/user/togleloginui.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ToggleLoginPage(),
+      home: Ip(),
     );
   }
 }

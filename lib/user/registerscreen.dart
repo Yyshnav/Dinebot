@@ -1,3 +1,5 @@
+import 'package:dinebot/api/loginApi.dart';
+import 'package:dinebot/api/registerApi.dart';
 import 'package:dinebot/user/loginscreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,12 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+
+  TextEditingController userController = TextEditingController();
+
+  TextEditingController placeController = TextEditingController();
+  TextEditingController numController = TextEditingController();
+
   bool _isObscure = true;
 
   @override
@@ -22,12 +30,11 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 135, 3, 3), // Warm red
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: SizedBox(
-            height: size.height,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+        child: SizedBox(
+          height: size.height,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -55,6 +62,27 @@ class _SignupPageState extends State<SignupPage> {
                     Icons.mail_rounded,
                     'Enter your email',
                     controller: emailController,
+                  ),
+                  SizedBox(height: 10),
+                  buildTextField(
+                    size,
+                    Icons.phone,
+                    'Enter your number',
+                    controller: numController,
+                  ),
+                  SizedBox(height: 10),
+                  buildTextField(
+                    size,
+                    Icons.place,
+                    'Enter your place',
+                    controller: placeController,
+                  ),
+                  SizedBox(height: 10),
+                  buildTextField(
+                    size,
+                    Icons.person_3_outlined,
+                    'Enter your username',
+                    controller: userController,
                   ),
                   SizedBox(height: 10),
                   buildTextField(
@@ -173,7 +201,16 @@ class _SignupPageState extends State<SignupPage> {
   Widget signUpButton(Size size) {
     return InkWell(
       onTap: () {
-        // Navigate to home after signup
+        registerapi(
+          context: context,
+          name: nameController.text,
+          email: emailController.text,
+          number: numController.text,
+          username: userController.text,
+          password: passController.text,
+          place: placeController.text,
+        );
+        // loginApi(); // Navigate to home after signup
       },
       child: Container(
         alignment: Alignment.center,

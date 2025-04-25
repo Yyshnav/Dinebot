@@ -1,4 +1,5 @@
 import 'package:dinebot/Restaurant/homescreen.dart';
+import 'package:dinebot/api/loginApi.dart';
 import 'package:dinebot/user/homescreen.dart';
 import 'package:dinebot/user/registerscreen.dart';
 import 'package:flutter/gestures.dart';
@@ -26,31 +27,43 @@ class _RestaurantLoginPageState extends State<RestaurantLoginPage> {
         child: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 100,
-                  backgroundImage: AssetImage('assets/restsnt.jpeg'),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Restaurant Panel',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.amber,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 100,
+                    backgroundImage: AssetImage('assets/restsnt.jpeg'),
                   ),
-                ),
-                SizedBox(height: 40),
-                buildTextField(Icons.email, 'Enter your email', false),
-                SizedBox(height: 20),
-                buildTextField(Icons.lock, 'Enter your password', true),
-                SizedBox(height: 30),
-                loginButton(),
-                SizedBox(height: 20),
-                // buildFooter(),
-              ],
+                  SizedBox(height: 20),
+                  Text(
+                    'Restaurant Panel',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber,
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  buildTextField(
+                    Icons.email,
+                    'Enter your username',
+                    false,
+                    emailController,
+                  ),
+                  SizedBox(height: 20),
+                  buildTextField(
+                    Icons.lock,
+                    'Enter your password',
+                    true,
+                    passController,
+                  ),
+                  SizedBox(height: 30),
+                  loginButton(),
+                  SizedBox(height: 20),
+                  // buildFooter(),
+                ],
+              ),
             ),
           ),
         ),
@@ -58,8 +71,14 @@ class _RestaurantLoginPageState extends State<RestaurantLoginPage> {
     );
   }
 
-  Widget buildTextField(IconData icon, String hint, bool isPassword) {
+  Widget buildTextField(
+    IconData icon,
+    String hint,
+    bool isPassword,
+    TextEditingController controller,
+  ) {
     return TextField(
+      controller: controller, // Add the controller here
       obscureText: isPassword ? _isObscure : false,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -98,10 +117,7 @@ class _RestaurantLoginPageState extends State<RestaurantLoginPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       onPressed: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => RestaurantHomeScreen()),
-        );
+        loginApi(emailController.text, passController.text, context);
       },
       child: Text(
         'Login',

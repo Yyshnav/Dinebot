@@ -1,3 +1,4 @@
+import 'package:dinebot/api/loginApi.dart';
 import 'package:dinebot/user/homescreen.dart';
 import 'package:dinebot/user/registerscreen.dart';
 import 'package:flutter/gestures.dart';
@@ -21,12 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(
-        255,
-        135,
-        3,
-        3,
-      ), // Warm red background
+      backgroundColor: const Color.fromARGB(255, 135, 3, 3),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -89,7 +85,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget emailTextField(Size size) {
-    return buildTextField(size, Icons.mail_rounded, 'Enter your email');
+    return buildTextField(
+      size,
+      Icons.mail_rounded,
+      'Enter your username',
+      controller: emailController,
+    );
   }
 
   Widget passwordTextField(Size size) {
@@ -98,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
       Icons.lock,
       'Enter your password',
       isPassword: true,
+      controller: passController,
     );
   }
 
@@ -106,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     IconData icon,
     String hint, {
     bool isPassword = false,
+    required TextEditingController controller,
   }) {
     return Container(
       alignment: Alignment.center,
@@ -123,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(width: 16),
             Expanded(
               child: TextField(
+                controller: controller,
                 obscureText: isPassword ? _isObscure : false,
                 cursorColor: Colors.white70,
                 keyboardType:
@@ -170,17 +174,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget signInButton(Size size) {
     return InkWell(
       onTap: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-        );
+        loginApi(emailController.text, passController.text, context);
       },
       child: Container(
         alignment: Alignment.center,
         height: size.height / 13,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: const Color(0xFFFFA500), // Warm orange button
+          color: const Color(0xFFFFA500),
         ),
         child: Text(
           'Sign in',
@@ -216,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
               text: 'Sign up',
               style: GoogleFonts.nunito(
-                color: const Color(0xFFFFD700), // Golden text for sign up
+                color: const Color(0xFFFFD700),
                 fontWeight: FontWeight.w600,
               ),
             ),

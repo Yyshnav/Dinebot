@@ -37,6 +37,13 @@ dependencies:
   flutter_svg: ^2.0.17
   google_fonts: ^6.2.1
   mobile_scanner: ^6.0.7
+  dio:
+  shared_preferences: ^2.5.3
+  image_picker: ^1.1.2
+  # qr_flutter: ^4.1.0
+  # qr_code_scanner: ^1.0.1
+  # flutter_qr_bar_scanner: ^3.0.2
+  # qr_code_scanner_plus: ^1.0.2
 
 dev_dependencies:
   flutter_test:

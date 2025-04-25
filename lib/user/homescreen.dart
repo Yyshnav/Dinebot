@@ -1,8 +1,10 @@
 import 'package:dinebot/user/appfeedbck.dart';
 import 'package:dinebot/user/complaintscreen.dart';
+import 'package:dinebot/user/history.dart';
 import 'package:dinebot/user/qrscanner.dart';
 
 import 'package:dinebot/user/review.dart';
+import 'package:dinebot/user/togleloginui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -22,6 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
+final  List<Widget> _screens = [
+      seconfScreen(),
+          HistoryScreen(),
+  ];  
 
   void _scanQRCode() {
     Navigator.push(
@@ -40,6 +46,21 @@ class _HomeScreenState extends State<HomeScreen> {
         3,
       ), // Same red background
       appBar: AppBar(
+        actions: [PopupMenuButton(itemBuilder: (context) => 
+      [
+        PopupMenuItem(
+          value: 'logout',
+          child: Text('Logout'),
+        ),
+      ],
+      onSelected: (value) {
+        if (value == 'logout') {
+          // Handle logout logic here
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ToggleLoginPage(),), (Route)=>false);
+        }
+      },
+      icon: Icon(Icons.more_vert_outlined,color: Colors.white,),
+      )],
         automaticallyImplyLeading: false,
         title: Text(
           'DineBot',
@@ -48,33 +69,25 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Color.fromARGB(255, 135, 3, 3),
         centerTitle: true,
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _buildDishesScreen(),
-          ApplicationFeedbackScreen(),
-          ReviewScreen(),
-          ComplaintScreen(),
-        ],
-      ),
+      // body: IndexedStack(
+      //   index: _selectedIndex,
+      //   children: [
+      //     _buildDishesScreen(),
+      //     HistoryScreen(),
+         
+      //   ],
+      // ),
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.restaurant),
             label: 'Dishes',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: 'Feedback'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.rate_review),
-            label: 'Reviews',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.feedback),
-            label: 'Complaints',
-          ),
-        ],
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Order History'),
+                 ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(255, 135, 3, 3),
+        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         backgroundColor: Color.fromARGB(255, 135, 3, 3),
         onTap: _onItemTapped,
@@ -82,22 +95,28 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton:
           _selectedIndex == 0
               ? FloatingActionButton(
-                onPressed: _scanQRCode,
+                onPressed: _scanQRCode,tooltip: "Scan QR Code",
                 backgroundColor: Colors.orange,
                 child: const Icon(Icons.qr_code_scanner, color: Colors.white),
               )
               : null,
     );
   }
+}
+class seconfScreen extends StatelessWidget {
+  const seconfScreen({super.key});
 
-  Widget _buildDishesScreen() {
+  @override
+  
+
+  Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'View Dishes Here',
+        'Scan to View Dishes ',
         style: GoogleFonts.inter(fontSize: 20, color: Colors.white),
       ),
     );
-  }
+  }}
 
   //   Widget _buildCartScreen() {
   //     return Center(
@@ -172,4 +191,4 @@ class _HomeScreenState extends State<HomeScreen> {
   //       ),
   //     );
   //   }
-}
+// }
